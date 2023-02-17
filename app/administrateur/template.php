@@ -34,6 +34,10 @@
                     require "app/administrateur/connexion/connexion.php";
                     break;
 
+                case "connexion-traitement":
+                    require "app/administrateur/connexion/connexion-traitement.php";
+                    break;
+
                 case "inscription":
                     require "app/administrateur/inscription/inscription.php";
                     break;

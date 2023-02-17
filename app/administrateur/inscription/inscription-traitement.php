@@ -49,6 +49,32 @@ if (
 
 if (empty($erreurs)) {
     //Tous vas bien
+    $instance_bd = connexion_bd();
+
+    $email_existe = email_existe($_POST["email"]);
+
+    if($email_existe) {
+
+        $erreurs["email"] = "Cette adresse mail est deja utilisées par un autre utilisateur. Veuillez le changer";
+
+    }else{
+
+        $utilisateur["nom"] = $donnnes["nom"];
+        $utilisateur["prenoms"] = $donnnes["prenoms"];
+        $utilisateur["email"] = $donnnes["email"];
+        $utilisateur["motdepasse"] = sha1($donnnes["mot-de-passe"]);
+        $utilisateur["profil"] = "ADMINISTRATEUR";
+
+        $enregistrer_utilisateur = enregistrer_utilisateur($utilisateur);
+
+        if($enregistrer_utilisateur){
+
+            $message = "Inscription effèctué avec succès. Veuillez contacter un admin pour valider votre compte.";
+
+        }
+
+    }
+
 } else {
 
     $erreur = "Oups!!! Une ou plusieurs champs sont mal remplir. Veuillez les corriger.";
