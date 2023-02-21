@@ -14,9 +14,7 @@ if (isset($_GET["erreurs"]) && !empty($_GET["erreurs"])) {
     $erreurs = json_decode($_GET["erreurs"], true);
 }
 
-?>
-
-<?php if (isset($_GET["message"]) && !empty($_GET["message"])) { ?>
+if (isset($_GET["message"]) && !empty($_GET["message"])) { ?>
     <div class="alert alert-success" role="alert">
         <p>
             <?= $_GET["message"]; ?>

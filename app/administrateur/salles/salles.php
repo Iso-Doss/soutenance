@@ -8,10 +8,10 @@ $salles = liste_salles();
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-sm-5 offset-md-1">
                 <h1 class="m-0">Gestion des salles</h1>
             </div><!-- /.col -->
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <div class="float-sm-right">
                     <a href="?profile=administrateur&ressource=ajouter-salle" class="btn btn-primary">Ajouter</a>
                 </div>
@@ -95,12 +95,12 @@ $salles = liste_salles();
                                                 <?= (isset($salle["nom-proprietaire"]) && !empty($salle["nom-proprietaire"])) ? $salle["nom-proprietaire"] : "-"; ?>
                                             </td>
                                             <td>
-                                                <?= (isset($salle["prenom-proprietaire"]) && !empty($salle["prenom-proprietaire"])) ? $salle["prenom-proprietaire"] : "-"; ?>
+                                                <?= (isset($salle["prenoms-proprietaire"]) && !empty($salle["prenoms-proprietaire"])) ? $salle["prenoms-proprietaire"] : "-"; ?>
                                             </td>
                                             <td>
                                                 <a href="#" class="btn btn-default">Détails</a>
-                                                <a href="#" class="btn btn-warning">Modifier</a>
-                                                <a href="#" class="btn btn-danger">Supprimer</a>
+                                                <a href="?profile=administrateur&ressource=modifier-salle&id=<?= (isset($salle["num-salle"]) && !empty($salle["num-salle"])) ? $salle["num-salle"] : "-"; ?>" class="btn btn-warning">Modifier</a>
+                                                <a href="?profile=administrateur&ressource=supprimer-salle&id=<?= (isset($salle["num-salle"]) && !empty($salle["num-salle"])) ? $salle["num-salle"] : "-"; ?>" class="btn btn-danger">Supprimer</a>
                                             </td>
                                         </tr>
 

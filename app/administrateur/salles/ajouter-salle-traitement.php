@@ -19,8 +19,4 @@ if (empty($erreurs)) {
     $erreur = "Oups!!! Une ou plusieurs champs sont mal remplir. Veuillez les corriger.";
 }
 
-var_dump("Ok");
-
-header_remove(); 
-
 header("location: index.php?profile=administrateur&ressource=ajouter-salle&message=$message&erreur=$erreur&erreurs=" . json_encode($erreurs) . "&donnees=" . json_encode($donnnes));

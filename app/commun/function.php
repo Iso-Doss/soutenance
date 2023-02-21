@@ -150,7 +150,7 @@ function utilisteur_existe(string $email, string $mot_de_pase): array
  * 
  * @return array $salles La liste des salles
  */
-function liste_salles() : array
+function liste_salles(): array
 {
 
     $salles = [];
@@ -176,4 +176,135 @@ function liste_salles() : array
     }
 
     return $salles;
+}
+
+/**
+ * Cette fonction permet d'ajouter / d'enregistrer une salle dans la base de données.
+ * 
+ * @param array $salle La salle.
+ * @return bool $ajouter_salle La salle a été ajoutée ou pas.
+ */
+function ajouter_salle($salle): bool
+{
+
+    $ajouter_salle = false;
+
+    $instance_bd = connexion_bd();
+
+    $requette = "INSERT INTO salle(`capacite`, `type-salle`, `nom-proprietaire`, `prenoms-proprietaire`) VALUES(:capacite, :type_salle, :nom_proprietaire, :prenoms_proprietaire)";
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute($salle);
+
+    if ($resultat) {
+
+        $ajouter_salle = true;
+    }
+
+
+    return $ajouter_salle;
+}
+
+/**
+ * Cette fonction permet de récupérer une salle depuis la base de données en fonction de son numéro de salle (num-salle).
+ * 
+ * @param $num_salle Le numéro de salle.
+ * @return array $salle La salle.
+ */
+function salle($num_salle): array
+{
+
+    $salle = [];
+
+    $instance_bd = connexion_bd();
+
+    $requette = "SELECT * FROM salle where `num-salle` = :num_salle";
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute([
+        "num_salle" => $num_salle
+    ]);
+
+    if ($resultat) {
+
+        $salle = $preparation_requette->fetch(PDO::FETCH_ASSOC);
+
+        if (!is_array($salle)) {
+
+            $salle = [];
+        }
+    }
+
+    return $salle;
+}
+
+
+
+/**
+ * Cette fonction permet de modifier / mettre a jour une salle dans la base de données a partir de son numéro de la salle (num-salle).
+ * 
+ * @param array $salle La salle.
+ * @return bool $modifier_salle La salle a été ajoutée ou pas.
+ */
+function modifier_salle($salle): bool
+{
+
+    $modifier_salle = false;
+
+    $instance_bd = connexion_bd();
+
+    $requette = "UPDATE `salle` SET `capacite`= :capacite,`type-salle`= :type_salle,`nom-proprietaire`=:nom_proprietaire, `prenoms-proprietaire`= :prenoms_proprietaire WHERE `num-salle` = :num_salle";
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute($salle);
+
+    if ($resultat) {
+
+        $modifier_salle = true;
+    }
+
+
+    return $modifier_salle;
+}
+
+/**
+ * Cette fonction permet de supprimer une salle de la base de données a partir de son numéro de la salle (num-salle).
+ * 
+ * @param array $num_salle Le numéro de la salle.
+ * 
+ * @return bool $modifier_salle La salle a été ajoutée ou pas.
+ */
+function supprimer_salle($num_salle): bool
+{
+
+    $supprimer_salle = false;
+
+    $instance_bd = connexion_bd();
+
+    $requette = "DELETE FROM salle WHERE `num-salle` = :num_salle";
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute([
+        "num_salle" => $num_salle
+    ]);
+
+    if ($resultat) {
+
+        $supprimer_salle = true;
+    }
+
+    return $supprimer_salle;
+
 }

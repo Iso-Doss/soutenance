@@ -74,7 +74,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="?profile=administrateur&ressource=tableau-de-board" class="nav-link <?= (isset($_GET["ressource"]) && !empty($_GET["ressource"]) && "tableau-de-board" == $_GET["ressource"]) ? 'active' : '' ;?>">
+                            <a href="?profile=administrateur&ressource=tableau-de-board" class="nav-link <?= (isset($_GET["ressource"]) && !empty($_GET["ressource"]) && "tableau-de-board" == $_GET["ressource"]) ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -82,7 +82,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="?profile=administrateur&ressource=salles" class="nav-link <?= (isset($_GET["ressource"]) && !empty($_GET["ressource"]) && ("salles" == $_GET["ressource"] || "ajouter-salle" == $_GET["ressource"])) ? 'active' : '' ;?>">
+                            <a href="?profile=administrateur&ressource=salles" class="nav-link <?= (isset($_GET["ressource"]) && !empty($_GET["ressource"]) && ("salles" == $_GET["ressource"] || "ajouter-salle" == $_GET["ressource"])) ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>
                                     Salles
@@ -130,7 +130,7 @@
                         break;
 
                     default:
-                    require "app/administrateur/tableau-de-board/tableau-de-board.php";
+                        require "app/administrateur/tableau-de-board/tableau-de-board.php";
                         break;
                 }
             } else {
