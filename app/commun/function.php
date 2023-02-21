@@ -10,17 +10,15 @@ function est_connecter(): bool
 
     $est_connecter = false;
 
-    switch($_GET["profile"]){
+    switch ($_GET["profile"]) {
 
         case "administrateur":
-            if(isset($_SESSION["administrateur_connecter"]) && !empty($_SESSION["administrateur_connecter"])){
+            if (isset($_SESSION["administrateur_connecter"]) && !empty($_SESSION["administrateur_connecter"])) {
                 $est_connecter = true;
             }
-
     }
 
     return $est_connecter;
-
 }
 
 
@@ -145,5 +143,37 @@ function utilisteur_existe(string $email, string $mot_de_pase): array
     }
 
     return $utilisteur_existe;
+}
 
+/**
+ * Cette fonction permet de récupérer la liste des salles depuis la base de données.
+ * 
+ * @return array $salles La liste des salles
+ */
+function liste_salles() : array
+{
+
+    $salles = [];
+
+    $instance_bd = connexion_bd();
+
+    $requette = "SELECT * FROM salle";
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute([]);
+
+    if ($resultat) {
+
+        $salles = $preparation_requette->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!is_array($salles)) {
+
+            $salles = [];
+        }
+    }
+
+    return $salles;
 }
