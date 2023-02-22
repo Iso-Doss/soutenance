@@ -148,16 +148,17 @@ function utilisteur_existe(string $email, string $mot_de_pase): array
 /**
  * Cette fonction permet de récupérer la liste des salles depuis la base de données.
  * 
+ * @param int $page La page.
  * @return array $salles La liste des salles
  */
-function liste_salles(): array
+function liste_salles(int $page = 0): array
 {
 
     $salles = [];
 
     $instance_bd = connexion_bd();
 
-    $requette = "SELECT * FROM salle";
+    $requette = "SELECT * FROM salle limit " . ($page * 10) + 1 . ", " . ($page + 1) * 10;
 
     // Préparation
     $preparation_requette = $instance_bd->prepare($requette);
@@ -306,5 +307,48 @@ function supprimer_salle($num_salle): bool
     }
 
     return $supprimer_salle;
+}
 
+
+function rechercher_salles(array $critres): array
+{
+
+    $salle = [];
+
+    $instance_bd = connexion_bd();
+
+    $requette = "SELECT * FROM salle ";
+
+    if (!empty($critres)) {
+        $requette .= " where ";
+        if (isset($critres["type_salle"]) && !empty($critres["type_salle"])) {
+            $requette .= "`type-salle` = :type_salle";
+
+            if (isset($critres["capacite"]) && !empty($critres["capacite"])) {
+                $requette .= " OR capacite = :capacite";
+            }
+        }else if (isset($critres["capacite"]) && !empty($critres["capacite"])) {
+            $requette .= "capacite = :capacite";
+        }
+    }
+
+    //die(var_dump($requette, $critres));
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute($critres);
+
+    if ($resultat) {
+
+        $salle = $preparation_requette->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!is_array($salle)) {
+
+            $salle = [];
+        }
+    }
+
+    return $salle;
 }
