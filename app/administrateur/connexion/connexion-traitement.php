@@ -1,6 +1,6 @@
 <?php
 
-$donnnes = $_POST;
+$donnees = $_POST;
 
 $erreurs = [];
 
@@ -58,4 +58,4 @@ if (empty($erreurs)) {
     $erreur = "Oups!!! Une ou plusieurs champs sont mal remplir. Veuillez les corriger.";
 }
 
-header("location: index.php?profile=administrateur&ressource=connexion&message=$message&erreur=$erreur&erreurs=" . json_encode($erreurs) . "&donnees=" . json_encode($donnnes));
+header("location: index.php?profile=administrateur&ressource=connexion&message=$message&erreur=$erreur&erreurs=" . json_encode($erreurs) . "&donnees=" . json_encode($donnees));

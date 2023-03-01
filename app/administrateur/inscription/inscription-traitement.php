@@ -1,6 +1,6 @@
 <?php
 
-$donnnes = $_POST;
+$donnees = $_POST;
 
 $erreurs = [];
 
@@ -59,10 +59,10 @@ if (empty($erreurs)) {
 
     }else{
 
-        $utilisateur["nom"] = $donnnes["nom"];
-        $utilisateur["prenoms"] = $donnnes["prenoms"];
-        $utilisateur["email"] = $donnnes["email"];
-        $utilisateur["motdepasse"] = sha1($donnnes["mot-de-passe"]);
+        $utilisateur["nom"] = $donnees["nom"];
+        $utilisateur["prenoms"] = $donnees["prenoms"];
+        $utilisateur["email"] = $donnees["email"];
+        $utilisateur["motdepasse"] = sha1($donnees["mot-de-passe"]);
         $utilisateur["profil"] = "ADMINISTRATEUR";
 
         $enregistrer_utilisateur = enregistrer_utilisateur($utilisateur);
@@ -80,4 +80,4 @@ if (empty($erreurs)) {
     $erreur = "Oups!!! Une ou plusieurs champs sont mal remplir. Veuillez les corriger.";
 }
 
-header("location: index.php?profile=administrateur&ressource=inscription&message=$message&erreur=$erreur&erreurs=" . json_encode($erreurs) . "&donnees=" . json_encode($donnnes));
+header("location: index.php?profile=administrateur&ressource=inscription&message=$message&erreur=$erreur&erreurs=" . json_encode($erreurs) . "&donnees=" . json_encode($donnees));
