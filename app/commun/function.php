@@ -21,7 +21,6 @@ function est_connecter(): bool
     return $est_connecter;
 }
 
-
 /**
  * Cette fonction permet de se connecter a une base de données.
  * 
@@ -75,7 +74,6 @@ function email_existe(string $email): bool
     return $email_existe;
 }
 
-
 /**
  * Cette fonction permet d'enregistrer / d'inscrire un utilisateur.
  * 
@@ -105,7 +103,6 @@ function enregistrer_utilisateur(array $utilisateur): bool
 
     return $utilisateur_enregistrer;
 }
-
 
 /**
  * Cette fonction permet de verifier l'existance d'un utilisateur qui essaye de se connecter.
@@ -158,7 +155,12 @@ function liste_salles(int $page = 0): array
 
     $instance_bd = connexion_bd();
 
-    $requette = "SELECT * FROM salle limit " . ($page * 10) + 1 . ", " . ($page + 1) * 10;
+    $requette = "SELECT * FROM salle";
+
+    if ($page != -1) {
+
+        $requette .= " limit " . ($page * 10) . ", " . ($page + 1) * 10;
+    }
 
     // Préparation
     $preparation_requette = $instance_bd->prepare($requette);
@@ -245,8 +247,6 @@ function salle($num_salle): array
     return $salle;
 }
 
-
-
 /**
  * Cette fonction permet de modifier / mettre a jour une salle dans la base de données a partir de son numéro de la salle (num-salle).
  * 
@@ -309,7 +309,6 @@ function supprimer_salle($num_salle): bool
     return $supprimer_salle;
 }
 
-
 function rechercher_salles(array $critres): array
 {
 
@@ -327,12 +326,10 @@ function rechercher_salles(array $critres): array
             if (isset($critres["capacite"]) && !empty($critres["capacite"])) {
                 $requette .= " OR capacite = :capacite";
             }
-        }else if (isset($critres["capacite"]) && !empty($critres["capacite"])) {
+        } else if (isset($critres["capacite"]) && !empty($critres["capacite"])) {
             $requette .= "capacite = :capacite";
         }
     }
-
-    //die(var_dump($requette, $critres));
 
     // Préparation
     $preparation_requette = $instance_bd->prepare($requette);
@@ -351,4 +348,149 @@ function rechercher_salles(array $critres): array
     }
 
     return $salle;
+}
+
+/**
+ * Cette fonction permet de récupérer la liste des représenatation depuis la base de données.
+ * 
+ * @param int $page La page.
+ * @return array $representations La liste des representations.
+ */
+function liste_representations(int $page = 0): array
+{
+
+    $representations = [];
+
+    $instance_bd = connexion_bd();
+
+    $requette = "SELECT r.*, s.`nom-spectacle`, sa.`type-salle`
+    FROM representation as r, salle as sa, spectacle as s
+    WHERE r.`num-spectacle` = `s`.`num-spectacle` and `r`.`num-salle` = `sa`.`num-salle` limit " . ($page * 10) . ", " . ($page + 1) * 10;
+
+    //$requette = "SELECT * FROM representation";
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute([]);
+
+    if ($resultat) {
+
+        $representations = $preparation_requette->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!is_array($representations)) {
+
+            $representations = [];
+        }
+    }
+
+    return $representations;
+}
+
+/**
+ * Cette fonction permet de récupérer la liste des spectacles depuis la base de données.
+ * 
+ * @param int $page La page.
+ * @return array $spectacles La liste des spectacles
+ */
+function liste_spectacles(int $page = 0): array
+{
+
+    $spectacles = [];
+
+    $instance_bd = connexion_bd();
+
+    $requette = "SELECT * FROM spectacle";
+
+    if ($page != -1) {
+
+        $requette .= " limit " . ($page * 10) . ", " . ($page + 1) * 10;
+    }
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute([]);
+
+    if ($resultat) {
+
+        $spectacles = $preparation_requette->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!is_array($spectacles)) {
+
+            $spectacles = [];
+        }
+    }
+
+    return $spectacles;
+}
+
+/**
+ * Cette fonction permet de récupérer un spectacle depuis la base de données en fonction de son numéro de spectacle (num-spectacle).
+ * 
+ * @param $num_spectacle Le numéro du spectacle.
+ * @return array $spectacle Le spectacle.
+ */
+function spectacle($num_spectacle): array
+{
+
+    $spectacle = [];
+
+    $instance_bd = connexion_bd();
+
+    $requette = "SELECT * FROM spectacle where `num-spectacle` = :num_spectacle";
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute([
+        "num_spectacle" => $num_spectacle
+    ]);
+
+    if ($resultat) {
+
+        $spectacle = $preparation_requette->fetch(PDO::FETCH_ASSOC);
+
+        if (!is_array($spectacle)) {
+
+            $spectacle = [];
+        }
+    }
+
+    return $spectacle;
+}
+
+/**
+ * Cette fonction permet d'ajouter / d'enregistrer une representation dans la base de données.
+ * 
+ * @param array $representation La representation.
+ * @return bool $ajouter_representation La representation a été ajoutée ou pas.
+ */
+function ajouter_representation($representation): bool
+{
+
+    //die(var_dump($representation));
+
+    $ajouter_representation = false;
+
+    $instance_bd = connexion_bd();
+
+    $requette = "INSERT INTO representation(`nom-representation`, `date-representation`, `heure-debut-representation`, `heure-fin-representation`, `num-spectacle`, `num-salle`) VALUES(:nom_representation, :date_representation, :heure_debut_representation, :heure_fin_representation, :num_spectacle, :num_salle)";
+
+    // Préparation
+    $preparation_requette = $instance_bd->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $preparation_requette->execute($representation);
+
+    if ($resultat) {
+
+        $ajouter_representation = true;
+    }
+
+
+    return $ajouter_representation;
 }

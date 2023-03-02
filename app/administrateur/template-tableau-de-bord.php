@@ -89,6 +89,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="?profile=administrateur&ressource=representations" class="nav-link <?= (isset($_GET["ressource"]) && !empty($_GET["ressource"]) && ("representations" == $_GET["ressource"] || "ajouter-representation" == $_GET["ressource"])) ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-house"></i>
+                                <p>
+                                    Représentations
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -127,6 +135,14 @@
 
                     case "supprimer-salle":
                         require "app/administrateur/salles/supprimer-salle.php";
+                        break;
+
+                    case "representations":
+                        require "app/administrateur/representations/representations.php";
+                        break;
+
+                    case "ajouter-representation":
+                        require "app/administrateur/representations/ajouter-representation.php";
                         break;
 
                     default:
