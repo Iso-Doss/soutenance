@@ -1,5 +1,15 @@
 <?php
 
+require_once 'vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+//use PHPMailer\PHPMailer\PHPMailer;
+//use PHPMailer\PHPMailer\SMTP;
+//use PHPMailer\PHPMailer\Exception;
+
 /**
  * Cette fonction permet de verifier si un utilisateur est connecter ou pas.
  * 
@@ -135,7 +145,7 @@ function utilisteur_existe(string $email, string $mot_de_pase): array
 
         if (!is_array($utilisteur_existe)) {
 
-            $email_existe = [];
+            $utilisteur_existe = [];
         }
     }
 
@@ -494,3 +504,44 @@ function ajouter_representation($representation): bool
 
     return $ajouter_representation;
 }
+
+
+/**
+    *
+    * @param type $destinaire
+    * @param type $subject
+    * @param type $body
+    * @return type
+    */
+    function e_mail($destinaire, $subject, $body)
+    {
+        $mail = new PHPMailer;
+        $mail->isSMTP();
+        $mail->SMTPDebug = 0;
+        $mail->Debugoutput = 'html';
+        $mail->Host = 'server1.bloom.bj';
+        $mail->Port = 465;
+        $mail->SMTPSecure = 'ssl';
+        $mail->SMTPAuth = true;
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+        $mail->Username = "noreply@bloom.bj";
+        $mail->Password = "lpR~nBu1y%1E";
+        $mail->setFrom('noreply@bloom.bj', 'BLOOM INSURANCE');
+        $mail->addAddress($destinaire, 'Client');
+        $mail->addBCC('emaileur.automatique@gmail.com', 'Auto Copie');
+        $mail->isHTML(true);
+        $mail->Subject = htmlspecialchars_decode($subject);
+        $mail->Body = $body;
+        $result = array("status" => "success", "message" => "Mail envoyé");
+        if (!$mail->send()) {
+            $result = array("status" => "error", "message" => "Une erreur est survenue lors l'envoi du mail.");
+        }
+        return json_encode($result);
+    }
+    

@@ -53,6 +53,7 @@
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">User connected</a>
+                        <a href="?profile=administrateur&ressource=deconnexion" class="d-block">Se deconnecter</a>
                     </div>
                 </div>
 
@@ -143,6 +144,10 @@
 
                     case "ajouter-representation":
                         require "app/administrateur/representations/ajouter-representation.php";
+                        break;
+
+                    case "deconnexion":
+                        require "app/administrateur/deconnexion/deconnexion.php";
                         break;
 
                     default:

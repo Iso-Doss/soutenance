@@ -50,6 +50,18 @@
                     require "app/administrateur/mot-de-passe-oublier/mot-de-passe-oublier.php";
                     break;
 
+                case "mot-de-passe-oublier-traitement":
+                    require "app/administrateur/mot-de-passe-oublier/mot-de-passe-oublier-traitement.php";
+                    break;
+
+                case "changer-mot-de-passe":
+                    require "app/administrateur/changer-mot-de-passe/changer-mot-de-passe.php";
+                    break;
+
+                case "changer-mot-de-passe-traitement":
+                    require "app/administrateur/changer-mot-de-passe/changer-mot-de-passe-traitement.php";
+                    break;
+
                 default:
                     require "app/administrateur/connexion/connexion.php";
                     break;
